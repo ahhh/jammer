@@ -12,8 +12,9 @@ Input: <input type="text" name="input1"><br>
 <br>
 <br>
 
-<!-- Begin response scanner function -->
+
 <?php
+//Begining of Response Fuzzer Section
 
 //Set fuzzdata length
 if(!empty($_POST['fuzzdatalen']))
@@ -30,35 +31,32 @@ if(!empty($_POST['fuzzpostdatas']))
 $fuzzpostdatas = true;
 }
 
-//Start switches for automated scanner responses
+//Start switches for automated scanner responses, makes it easy to add new triggers
 //So long as there is input
 if(!empty($_POST['input1']))
 {
 
- //This is a Zed Attack Proxy default test injection
- if($_POST['input1'] == "ZAP")
- {
-  header("HTTP/1.0 500 Internal Server Error");
-  $response = randfuzz($fuzzdatalen);
-  trackUser("Tripped Default ZAP Fuzzing");
- }
- else
- { 
-
-   //This is a common SQLInjection test
-   if($_POST['input1'] == "'")
-    {
-     header("HTTP/1.0 500 Internal Server Error");
-     $response = randfuzz($fuzzdatalen);
-     trackUser("Tripped Common SQLInjection Fuzzing");
-    }
-    else
-    {
-     //Base response for unrecognized test
+ switch ($_POST['input1']) {
+ 
+ //This is a ZAP Attack Proxy default test injection
+ case "ZAP":
+	header("HTTP/1.0 500 Internal Server Error");
+	$response = randfuzz($fuzzdatalen);
+	trackUser("Tripped Default ZAP Fuzzing");
+	break;
+ 
+ //This is a default string to test for SQLInjection
+ case "'":
+ 	header("HTTP/1.0 500 Internal Server Error");
+ 	$response = randfuzz($fuzzdatalen);
+ 	trackUser("Tripped Common SQLInjection Fuzzing");
+ 	break;
+ 
+ //Base response for unrecognized test
+ default:
      $response = "testing";
     }
  }
-}
 
 
 //below is the random functions
