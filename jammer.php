@@ -93,8 +93,8 @@ machine!");
 //Function below is for logging what triggered fuzzing
 function trackUser($message)
 {
-   $fp = fopen('jammer_log.txt', 'w');
-   fwrite($fp, $_SERVER[REMOTE_ADDR]." ". date('Y-m-d H:i:s')." ".$message); 
+   $fp = fopen('jammer_log.txt', 'a');
+   fwrite($fp, $_SERVER[REMOTE_ADDR]." ". date('Y-m-d H:i:s')." ".$message."\n"); 
    fclose($fp);
 }
 
