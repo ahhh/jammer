@@ -44,6 +44,13 @@ if(!empty($_POST['input1']))
 	$response = randfuzz($fuzzdatalen);
 	trackUser("Tripped Default ZAP Fuzzing");
 	break;
+
+//This is a SkipFish default test injection
+ case "9876sfi":
+	header("HTTP/1.0 409 Conflict");
+	$response = randfuzz($fuzzdatalen);
+	trackUser("Tripped Default SkipFish Fuzzing");
+	break;
  
  //This is a default string to test for SQLInjection
  case "'":
