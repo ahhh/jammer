@@ -6,7 +6,7 @@
 <body>
 
 <form action="jammer.php" method="post">
-Input: <input type="text" name="input1"><br>
+Input: <input type="text" name="name"><br>
 <input type="submit">
 </form>
 <br>
@@ -33,10 +33,10 @@ $fuzzpostdatas = true;
 
 //Start switches for automated scanner responses, makes it easy to add new triggers
 //So long as there is input
-if(!empty($_POST['input1']))
+if(!empty($_POST['name']))
 {
 
- switch ($_POST['input1']) {
+ switch ($_POST['name']) {
  
  //This is a ZAP Attack Proxy default test injection
  case "ZAP":
@@ -50,6 +50,13 @@ if(!empty($_POST['input1']))
 	header("HTTP/1.0 409 Conflict");
 	$response = randfuzz($fuzzdatalen);
 	trackUser("Tripped Default SkipFish Fuzzing");
+	break;
+
+//This is a Burp Spider default test injection
+ case "Peter Winter":
+	header("HTTP/1.0 201 Created");
+	$response = randfuzz($fuzzdatalen);
+	trackUser("Tripped Default Burp Spider Fuzzing");
 	break;
  
  //This is a default string to test for SQLInjection
