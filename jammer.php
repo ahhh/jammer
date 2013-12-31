@@ -54,7 +54,8 @@ if(!empty($_POST['name']))
 
 //This is a Burp Spider default test injection
  case "Peter Winter":
-	header("HTTP/1.0 201 Created");
+	//Triggers Spider adding response to Target page
+	header('Location: index.php', true,302);
 	$response = randfuzz($fuzzdatalen);
 	trackUser("Tripped Default Burp Spider Fuzzing");
 	break;
