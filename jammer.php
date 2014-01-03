@@ -111,6 +111,24 @@ function trackUser($message)
    $fp = fopen('jammer_log.txt', 'a');
    fwrite($fp, $_SERVER[REMOTE_ADDR]." ". date('Y-m-d H:i:s')." ".$message."\n"); 
    fclose($fp);
+
+   $hits = track($_SERVER[REMOTE_ADDR]);
+   echo $hits;
+}
+
+function track($IP)
+{
+
+$log = fopen("jammer_log.txt", "r");
+$counting = 0;
+while ($line = fgets($log)) {
+	$line = explode(",", $line);
+        if($line[0] = $IP)
+         $counting++;
+        
+       }
+return $counting;
+
 }
 
 
