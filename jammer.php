@@ -41,30 +41,30 @@ if(!empty($_POST['name']))
  //This is a ZAP Attack Proxy default test injection
  case "ZAP":
 	header("HTTP/1.0 500 Internal Server Error");
-	$response = randfuzz($fuzzdatalen);
-	trackUser("Tripped Default ZAP Fuzzing");
+	$hits = trackUser("Tripped Default ZAP Fuzzing");
+        $response = randfuzz($fuzzdatalen * $hits);
 	break;
 
 //This is a SkipFish default test injection
  case "9876sfi":
 	header("HTTP/1.0 409 Conflict");
-	$response = randfuzz($fuzzdatalen);
-	trackUser("Tripped Default SkipFish Fuzzing");
+	$hits = trackUser("Tripped Default SkipFish Fuzzing");
+        $response = randfuzz($fuzzdatalen * $hits);
 	break;
 
 //This is a Burp Spider default test injection
  case "Peter Winter":
 	//Triggers Spider adding response to Target page
 	header('Location: index.php', true,302);
-	$response = randfuzz($fuzzdatalen);
-	trackUser("Tripped Default Burp Spider Fuzzing");
+        $hits = trackUser("Tripped Default Burp Spider Fuzzing");
+	$response = randfuzz($fuzzdatalen * $hits);
 	break;
  
  //This is a default string to test for SQLInjection
  case "'":
  	header("HTTP/1.0 500 Internal Server Error");
- 	$response = randfuzz($fuzzdatalen);
- 	trackUser("Tripped Common SQLInjection Fuzzing");
+ 	$hits = trackUser("Tripped Common SQLInjection Fuzzing");
+        $response = randfuzz($fuzzdatalen * $hits);
  	break;
  
  //Base response for unrecognized test
@@ -112,8 +112,8 @@ function trackUser($message)
    fwrite($fp, $_SERVER[REMOTE_ADDR]." ". date('Y-m-d H:i:s')." ".$message."\n"); 
    fclose($fp);
 
-   $hits = track($_SERVER[REMOTE_ADDR]);
-   echo $hits;
+   $hit = track($_SERVER[REMOTE_ADDR]);
+   return $hit;
 }
 
 function track($IP)
@@ -125,8 +125,8 @@ while ($line = fgets($log)) {
 	$line = explode(",", $line);
         if($line[0] = $IP)
          $counting++;
-        
        }
+
 return $counting;
 
 }
