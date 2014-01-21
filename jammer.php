@@ -126,7 +126,7 @@ while ($line = fgets($log)) {
         if($line[0] = $IP)
          $counting++;
        }
-
+fclose($log);
 return $counting;
 
 }
